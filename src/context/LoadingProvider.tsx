@@ -41,8 +41,6 @@ export const LoadingProvider = ({ children }: PropsWithChildren) => {
     }
   }, []);
 
-  useEffect(() => {}, [loading]);
-
   return (
     <LoadingContext.Provider value={value as LoadingType}>
       {isLoading && <Loading percent={loading} />}

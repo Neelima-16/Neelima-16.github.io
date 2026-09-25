@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import "./styles/Loading.css";
 import { useLoading } from "../context/LoadingProvider";
-
 import Marquee from "react-fast-marquee";
+import { config } from "../config";
 
 const Loading = ({ percent }: { percent: number }) => {
   const { setIsLoading } = useLoading();
@@ -10,18 +10,22 @@ const Loading = ({ percent }: { percent: number }) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [clicked, setClicked] = useState(false);
 
-  if (percent >= 100) {
-    setTimeout(() => {
-      setLoaded(true);
-      setTimeout(() => {
-        setIsLoaded(true);
-      }, 1000);
-    }, 600);
-  }
+  useEffect(() => {
+    if (percent >= 100) {
+      const t1 = setTimeout(() => {
+        setLoaded(true);
+        const t2 = setTimeout(() => {
+          setIsLoaded(true);
+        }, 1000);
+        return () => clearTimeout(t2);
+      }, 600);
+      return () => clearTimeout(t1);
+    }
+  }, [percent]);
 
   useEffect(() => {
-    import("./utils/initialFX").then((module) => {
-      if (isLoaded) {
+    if (isLoaded) {
+      import("./utils/initialFX").then((module) => {
         setClicked(true);
         setTimeout(() => {
           if (module.initialFX) {
@@ -29,9 +33,9 @@ const Loading = ({ percent }: { percent: number }) => {
           }
           setIsLoading(false);
         }, 900);
-      }
-    });
-  }, [isLoaded]);
+      });
+    }
+  }, [isLoaded, setIsLoading]);
 
   function handleMouseMove(e: React.MouseEvent<HTMLElement>) {
     const { currentTarget: target } = e;
@@ -42,19 +46,20 @@ const Loading = ({ percent }: { percent: number }) => {
     target.style.setProperty("--mouse-y", `${y}px`);
   }
 
+  const marqueeText = `\u00A0 ${config.developer.title} \u00A0`;
+
   return (
     <>
       <div className="loading-header">
         <a href="/#" className="loader-title" data-cursor="disable">
-          KAKULAPATI NEELIMA
+          {config.developer.fullName.toUpperCase()}
         </a>
-
       </div>
       <div className="loading-screen">
         <div className="loading-marquee">
           <Marquee>
-            <span>&nbsp; Engineering Student &nbsp;</span> <span>&nbsp; Engineering Student &nbsp;</span>
-            <span>&nbsp; Engineering Student &nbsp;</span> <span>&nbsp; Engineering Student &nbsp;</span>
+            <span>{marqueeText}</span> <span>{marqueeText}</span>
+            <span>{marqueeText}</span> <span>{marqueeText}</span>
           </Marquee>
         </div>
         <div
@@ -83,44 +88,3 @@ const Loading = ({ percent }: { percent: number }) => {
 
 export default Loading;
 
-export const setProgress = (setLoading: (value: number) => void) => {
-  let percent: number = 0;
-
-  let interval = setInterval(() => {
-    if (percent <= 50) {
-      let rand = Math.round(Math.random() * 5);
-      percent = percent + rand;
-      setLoading(percent);
-    } else {
-      clearInterval(interval);
-      interval = setInterval(() => {
-        percent = percent + Math.round(Math.random());
-        setLoading(percent);
-        if (percent > 91) {
-          clearInterval(interval);
-        }
-      }, 2000);
-    }
-  }, 100);
-
-  function clear() {
-    clearInterval(interval);
-    setLoading(100);
-  }
-
-  function loaded() {
-    return new Promise<number>((resolve) => {
-      clearInterval(interval);
-      interval = setInterval(() => {
-        if (percent < 100) {
-          percent++;
-          setLoading(percent);
-        } else {
-          resolve(percent);
-          clearInterval(interval);
-        }
-      }, 2);
-    });
-  }
-  return { loaded, percent, clear };
-};
