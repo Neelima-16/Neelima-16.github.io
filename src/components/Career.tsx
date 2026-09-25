@@ -1,6 +1,10 @@
 import "./styles/Career.css";
 import { config } from "../config";
 import { useEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const getDisplayYear = (period: string) => {
   if (period.includes("Present")) return "NOW";
@@ -11,36 +15,44 @@ const getDisplayYear = (period: string) => {
 };
 
 const Career = () => {
-  const timelineRef = useRef<HTMLDivElement>(null);
   const sectionRef = useRef<HTMLDivElement>(null);
+  const timelineRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const timeline = timelineRef.current;
     const section = sectionRef.current;
-    if (!timeline || !section) return;
+    const timeline = timelineRef.current;
+    if (!section || !timeline) return;
 
-    const handleScroll = () => {
-      const rect = section.getBoundingClientRect();
-      const windowH = window.innerHeight;
+    const ctx = gsap.context(() => {
+      const careerTimeline = gsap.timeline({
+        scrollTrigger: {
+          trigger: section,
+          start: "top 70%",
+          end: "bottom 60%",
+          scrub: 1,
+          invalidateOnRefresh: true,
+        },
+      });
 
-      // How far we've scrolled into the section (0 → 1)
-      // Start: when section top hits viewport bottom
-      // End:   when section bottom hits viewport top
-      const total = rect.height + windowH;
-      const scrolled = windowH - rect.top;
-      const progress = Math.min(Math.max(scrolled / total, 0), 1);
+      careerTimeline
+        .fromTo(
+          timeline,
+          { maxHeight: "0%", opacity: 0 },
+          { maxHeight: "100%", opacity: 1, duration: 1, ease: "none" }
+        )
+        .fromTo(
+          ".career-info-box",
+          { opacity: 0, y: 20 },
+          { opacity: 1, y: 0, stagger: 0.15, duration: 0.6, ease: "power2.out" },
+          0
+        );
+    }, sectionRef);
 
-      timeline.style.maxHeight = `${progress * 100}%`;
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll(); // run once on mount
-
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => ctx.revert();
   }, []);
 
   return (
-    <div className="career-section section-container" ref={sectionRef}>
+    <div className="career-section section-container" id="career" ref={sectionRef}>
       <div className="career-container">
         <h2>
           My career <span>&</span>

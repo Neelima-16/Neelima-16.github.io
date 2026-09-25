@@ -14,8 +14,7 @@ Computer Science student at MIC College of Technology, building projects in AI/M
 
 - 📧 Email: [theneelimakakulapati@gmail.com](mailto:theneelimakakulapati@gmail.com)
 - 💼 GitHub: [https://github.com/Neelima-16](https://github.com/Neelima-16)
-- 🔗 LinkedIn: [linkedin.com/in/mokshyagnayadav](https://www.linkedin.com/in/kakulapati-neelima/)
-- 📸 Instagram: [instagram.com/mokshyagnayadav](https://www.instagram.com/)
+- 🔗 LinkedIn: [linkedin.com/in/kakulapati-neelima](https://www.linkedin.com/in/kakulapati-neelima/)
 - 📍 Location: Hyderabad, India
 
 ---
@@ -106,7 +105,7 @@ public/resume/resume.pdf
 
 - 📧 [theneelimakakulapati@gmail.com](mailto:theneelimakakulapati@gmail.com)
 - 💼 [https://github.com/Neelima-16](https://github.com/Neelima-16)
-- 🔗 [linkedin.com/in/mokshyagnayadav](https://www.linkedin.com/in/kakulapati-neelima/)
+- 🔗 [linkedin.com/in/kakulapati-neelima](https://www.linkedin.com/in/kakulapati-neelima/)
 
 ---
 

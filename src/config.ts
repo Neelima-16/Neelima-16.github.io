@@ -122,4 +122,37 @@ export const config = {
     }
 };
 
+export interface OrgMemberItem {
+    login: string;
+    avatarUrl: string;
+    url: string;
+    role?: string;
+}
 
+export interface OrgRepoItem {
+    name: string;
+    description: string;
+    url: string;
+    language?: string;
+    stars?: number;
+    forks?: number;
+    pushedAt?: string;
+    updatedAt?: string;
+}
+
+export interface OrganizationItem {
+    id: string | number;
+    name: string;
+    login: string;
+    role: string;
+    avatarUrl: string;
+    url: string;
+    description: string;
+    location?: string;
+    email?: string;
+    publicRepos?: number;
+    membersCount?: number;
+    verified?: boolean;
+    members?: OrgMemberItem[];
+    repositories?: OrgRepoItem[];
+}
